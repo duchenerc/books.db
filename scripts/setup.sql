@@ -1,7 +1,7 @@
 -- sqlite doesn't take CREATE DATABASE commands,
 -- since databases are files
 
-create table authors (
+create table if not exists authors (
     id integer
     constraint authors_key primary key autoincrement,
 
@@ -11,42 +11,42 @@ create table authors (
     notes text
 );
 
-create table genres (
+create table if not exists genres (
     id integer
     constraint genres_key primary key autoincrement,
 
     genre_name text unique
 );
 
-create table conditions (
+create table if not exists conditions (
     id integer
     constraint conditions_key primary key autoincrement,
 
     condition text
 );
 
-create table jackets (
+create table if not exists jackets (
     id integer
     constraint jackets_key primary key autoincrement,
 
     jacket text
 );
 
-create table bindings (
+create table if not exists bindings (
     id integer
     constraint bindings_key primary key autoincrement,
 
     book_binding text
 );
 
-create table publishers (
+create table if not exists publishers (
     id integer
     constraint publishers_key primary key autoincrement,
 
     publisher text unique
 );
 
-create table books (
+create table if not exists books (
     id integer
     constraint books_key primary key autoincrement,
 
@@ -85,7 +85,7 @@ create table books (
         on update no action
 );
 
-create table books_authors (
+create table if not exists books_authors (
     id integer
     constraint books_authors_key primary key autoincrement,
 
