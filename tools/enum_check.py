@@ -1,6 +1,5 @@
 from csv import reader
 import re
-from isbn_check import INVENTORY
 
 CONDITION_COL = 3
 JACKET_COL = 4
@@ -42,6 +41,8 @@ def parse_binding(binding_line):
     return binding_line.strip().lower()
 
 def main():
+    from isbn_check import INVENTORY
+
     fin = open(INVENTORY, newline="")
     csvin = reader(fin)
 

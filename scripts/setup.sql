@@ -1,55 +1,55 @@
-PRAGMA 
-
 -- sqlite doesn't take CREATE DATABASE commands,
 -- since databases are files
 
 create table authors (
-    id integer autoincrement,
+    id integer
+    constraint authors_key primary key autoincrement,
+
     surname text not null,
     given_name text,
 
-    notes text,
-
-    primary key (id asc)
+    notes text
 );
 
 create table genres (
-    id integer autoincrement,
-    genre_name text unique,
+    id integer
+    constraint genres_key primary key autoincrement,
 
-    primary key (id asc)
+    genre_name text unique
 );
 
 create table conditions (
-    id integer autoincrement,
-    condition text,
+    id integer
+    constraint conditions_key primary key autoincrement,
 
-    primary key (id asc)
+    condition text
 );
 
 create table jackets (
-    id integer autoincrement,
-    jacket text,
+    id integer
+    constraint jackets_key primary key autoincrement,
 
-    primary key (id asc)
+    jacket text
 );
 
 create table bindings (
-    id integer autoincrement,
-    book_binding text,
+    id integer
+    constraint bindings_key primary key autoincrement,
 
-    primary key (id asc)
+    book_binding text
 );
 
 create table publishers (
-    id integer autoincrement,
-    publisher text unique,
+    id integer
+    constraint publishers_key primary key autoincrement,
 
-    primary key(id asc)
+    publisher text unique
 );
 
 create table books (
-    id integer autoincrement,
+    id integer
+    constraint books_key primary key autoincrement,
+
     title not null,
 
     -- TODO: implement authors column
@@ -63,8 +63,6 @@ create table books (
 
     publish_year text not null,
     notes text,
-
-    primary key (id asc),
 
     foreign key (publisher_id) references publishers (id)
         on delete no action
@@ -84,5 +82,21 @@ create table books (
     
     foreign key (binding_id) references bindings (id)
         on delete no action
+        on update no action
+);
+
+create table books_authors (
+    id integer
+    constraint books_authors_key primary key autoincrement,
+
+    book_id integer not null,
+    author_id integer not null,
+
+    foreign key (book_id) references books (id)
+        on delete no action
         on update no action,
+    
+    foreign key (author_id) references authors (id)
+        on delete no action
+        on update no action
 );
