@@ -1,3 +1,4 @@
 .vscode
 *.db
 *.out
+__pycache__
