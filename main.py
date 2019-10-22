@@ -5,12 +5,65 @@ from os.path import dirname, abspath
 
 from tools.enum_check import parse_binding, parse_condition, parse_jacket
 from tools.isbn_check import parse_isbn
-from tools.name_check import parse_authors
+from tools.name_check import parse_authors, parse_last_comma_first
 
 DATABASE_FILENAME = "books.db"
 MYDIR = dirname(abspath(__file__))
 SCRIPTS_DIR = f"{MYDIR}/scripts"
 
+INVENTORY = f"{MYDIR}/inventory.csv"
+
+AUTHOR_COL = 0
+TITLE_COL = 1
+PUBLISHER_COL = 2
+CONDITION_COL = 3
+JACKET_COL = 4
+BINDING_COL = 5
+GENRE_COL = 6
+ISBN_COL = 7
+PUBLISHYEAR_COL = 8
+EDITION_COL = 9
+PAGES_COL = 10
+NOTES_COL = 11
+
+BOOK_INSERT = """
+insert into books
+(
+    title,
+    publisher_id,
+    genre_id,
+    jacket_id,
+    condition_id,
+    binding_id,
+    isbn,
+    publish_year,
+    book_edition,
+    page_count,
+    notes,
+    id
+)
+values
+(
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?,
+    ?
+);
+"""
+
+def id_generator():
+    counter = 1
+    while True:
+        yield counter
+        count += 1
 
 def get_sql_script(filename):
     fin = open(filename)
@@ -38,6 +91,155 @@ def db_setup(conn):
 def main():
     conn = db_connect(DATABASE_FILENAME)
     db_setup(conn)
+
+
+    fin = open(INVENTORY)
+    csvin = reader(fin)
+
+    with open(f"{MYDIR}/name_check.json") as jsonin:
+        author_resolve = json.load(jsonin)
+
+    genres_store = []
+    authors_store = []
+    jackets_store = []
+    conditions_store = []
+    bindings_store = []
+    publishers_store = []
+
+
+    next(csvin) # skip headers
+
+    for entry in csvin:
+
+        genre_idgen = id_generator()
+        condition_idgen = id_generator()
+        jacket_idgen = id_generator()
+        binding_idgen = id_generator()
+        publisher_idgen = id_generator()
+
+        book_idgen = id_generator()
+        author_idgen = id_generator()
+
+        genre = entry[GENRE_COL]
+        condition = parse_condition(entry[CONDITION_COL])
+        jacket = parse_jacket(entry[JACKET_COL])
+        binding = parse_binding(entry[BINDING_COL])
+        publisher = entry[PUBLISHER_COL]
+        publish_year = entry[PUBLISHYEAR_COL]
+
+        edition = entry[EDITION_COL]
+        page_count = entry[PAGES_COL]
+        book_notes = entry[NOTES_COL]
+
+        title = entry[TITLE_COL]
+        isbn = parse_isbn(entry[ISBN_COL])
+
+        
+
+        with conn.cursor() as c:
+            if genre not in genres_store:
+                c.execute("insert into genres values (?, ?);", next(genre_idgen), genre)
+                genres_store.append(genre)
+                conn.commit()
+            
+            if condition not in conditions_store:
+                c.execute("insert into conditions values (?, ?);", next(condition_idgen), condition)
+                conditions_store.append(condition)
+                conn.commit()
+            
+            if jacket not in jackets_store:
+                c.execute("insert into jackets values (?, ?);", next(jacket_idgen), jacket)
+                jackets_store.append(jacket)
+                conn.commit()
+            
+            if binding not in bindings_store:
+                c.execute("insert into bindings values (?, ?);", next(binding_idgen), binding)
+                bindings_store.append(binding)
+                conn.commit()
+            
+            if publisher not in publishers_store:
+                c.execute("insert into publishers values (?, ?);", next(publisher_idgen), publisher)
+                publishers_store.append(publisher)
+                conn.commit()
+        
+        # genre_id
+        with conn.cursor() as c:
+            c.execute("select id from genres where genre_name = ?;", genre)
+            genre_id = c.fetchone()[0]
+        
+        # condition_id
+        with conn.cursor() as c:
+            c.execute("select id from conditions where condition_name = ?;", condition)
+            condition_id = c.fetchone()[0]
+
+        # jacket_id
+        with conn.cursor() as c:
+            c.execute("select id from jackets where jacket = ?;", jacket)
+            jacket_id = c.fetchone()[0]
+        
+        # binding_id
+        with conn.cursor() as c:
+            c.execuete("select id from bindings where book_binding = ?;", binding)
+            binding_id = c.fetchone()[0]
+        
+        # publisher_id
+        with conn.cursor() as c:
+            c.execute("select id from publishers where publisher = ?;", publisher)
+            publisher_id = c.fetchone()[0]
+        
+        conn.commit()
+
+        with conn.cursor() as c:
+            this_book_id = next(book_idgen)
+
+            c.execute(BOOK_INSERT,
+                title,
+                publisher_id,
+                genre_id,
+                jacket_id,
+                condition_id,
+                binding_id,
+                isbn,
+                publish_year,
+                edition,
+                page_count,
+                book_notes,
+                this_book_id
+            )
+        
+        conn.commit()
+
+        parsed, lookup = parse_authors(entry[AUTHOR_COL])
+
+        for line in lookup:
+            looked_up = author_resolve[line]
+            parsed += [parse_last_comma_first(x) for x in looked_up]
+            
+        authors_ids = []
+        for first, last in parsed:
+            with conn.cursor() as c:
+                c.execute("select id from authors where surname = ? and given_name = ?;", last, first)
+                results = c.fetchall()
+
+                if len(results) == 0:
+                    author_id = next(author_idgen)
+                    c.execute("insert into authors values (?, ?, ?, NULL);", author_id, last, first)
+                
+                else:
+                    author_id = results[0][0]
+                
+                authors_ids.append(author_id)
+        
+        conn.commit()
+
+        with conn.cursor() as c:
+            for author_id in authors_ids:
+                c.execute("insert into books_authors values (NULL, ?, ?);", this_book_id, author_id)
+
+        conn.commit()
+
+    conn.close()
+    fin.close()
 
 
 if __name__ == "__main__":

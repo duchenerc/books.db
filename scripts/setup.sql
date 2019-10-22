@@ -29,14 +29,14 @@ create table if not exists jackets (
     id integer
     constraint jackets_key primary key autoincrement,
 
-    jacket text
+    jacket text unique
 );
 
 create table if not exists bindings (
     id integer
     constraint bindings_key primary key autoincrement,
 
-    book_binding text
+    book_binding text unique
 );
 
 create table if not exists publishers (
@@ -58,10 +58,13 @@ create table if not exists books (
     genre_id integer not null,
 
     jacket_id integer not null,
-    grade_id integer not null,
+    condition_id integer not null,
     binding_id integer not null,
 
+    isbn text,
     publish_year text not null,
+    book_edition text,
+    page_count integer,
     notes text,
 
     foreign key (publisher_id) references publishers (id)
@@ -76,7 +79,7 @@ create table if not exists books (
         on delete no action
         on update no action,
     
-    foreign key (grade_id) references conditions (id)
+    foreign key (condition_id) references conditions (id)
         on delete no action
         on update no action,
     

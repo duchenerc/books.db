@@ -51,7 +51,7 @@ def main():
     conditions_db = []
     jackets_db = []
     bindings_db = []
-    genres_db = []
+    genres_db = dict()
 
     for entry in csvin:
         condition_line = entry[CONDITION_COL]
@@ -78,7 +78,10 @@ def main():
             bindings_db.append(binding)
 
         if genre not in genres_db:
-            genres_db.append(genre)
+            genres_db[genre] = 1
+        
+        else:
+            genres_db[genre] += 1
 
 
     fin.close()
@@ -92,7 +95,7 @@ def main():
     for binding in bindings_db: print(binding)
     print()
 
-    for genre in genres_db: print(genre)
+    for genre, count in genres_db.items(): print(f"{genre} ({count})")
     print()
 
 

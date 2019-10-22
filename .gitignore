@@ -1,4 +1,6 @@
 .vscode
 *.db
+*.db-shm
+*.db-wal
 *.out
 __pycache__

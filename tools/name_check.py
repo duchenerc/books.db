@@ -10,34 +10,40 @@ from csv import reader
 import re
 from os.path import abspath, dirname
 
-LAST_COMMA_FIRST = re.compile(r"[a-z-\.\s']+,+\s[a-z-\.\s]+", re.IGNORECASE)
-CONTAINS_AND = re.compile(r"\s(and|as|with)\s", re.IGNORECASE)
-DELIMITER = re.compile(r"\s(?:and|with|\&|w\/)\s", re.IGNORECASE)
+LAST_COMMA_FIRST = re.compile(r"[a-z-\.\s']+,[\s,]*[a-z-\.\s]+", re.IGNORECASE)
+CONTAINS_AND = re.compile(r"\s(and|as|with|\+)\s", re.IGNORECASE)
+DELIMITER = re.compile(r"\sand\s|\swith\s|\&|\sw\/|\+", re.IGNORECASE)
 
 T = r"|".join([
-    r"Jr\.?",
-    r"Sr\.?",
-    r"M\.?D\.?",
-    r"Dr\.?",
-    r"Evangelist",
-    r"Mrs\.?",
-    r"Rev\.?",
-    r"Ph\.?\s?D\.?"
+    r"\bJr\.?$",
+    r"\bSr\.?$",
+    r"\bM\.?D\.?$",
+    r"\bDr\.?$",
+    r"\bEvangelist$",
+    r"\bMrs\.?$",
+    r"\bRev\.?$",
+    r"\bPh\.?\s?D\.?$",
+    r"\bR\.?\s*N\.?$",
+    r"\bC\.?\s*N\.?\s*S\.?$",
+    r"\bM\.?\s*E\.?$",
+    r"\bM\.?\s*A\.?$",
+    r"\bA\.?\s*M\.?$",
+    r"\bF\.?\s*R\.?\s*P\.?\s*S\.?$",
 ])
 
 TITLES = re.compile(T, re.IGNORECASE)
 
 def parse_last_comma_first(author):
-    return tuple([x.strip() for x in author.split(",") if len(x.strip()) > 0])
+    return tuple([x.strip(" ,") for x in author.split(",") if len(x.strip(" ,")) > 0])
 
 def is_last_comma_first(author):
     return re.fullmatch(LAST_COMMA_FIRST, author) and not re.search(CONTAINS_AND, author)
 
 def strip_titles(author):
-    return re.sub(TITLES, "", author).strip()
+    return re.sub(TITLES, "", author).strip(" ,")
 
 def split_author_line(author_line):
-    return [x.strip() for x in re.split(DELIMITER, author_line) if len(x.strip()) > 0]
+    return [x.strip(" ,") for x in re.split(DELIMITER, author_line) if len(x.strip(" ,")) > 0]
 
 def parse_authors(author_line_):
 
@@ -45,7 +51,7 @@ def parse_authors(author_line_):
 
     # try simple "last, first" format
     if is_last_comma_first(author_line):
-        return ((parse_last_comma_first(author_line),),), False
+        return ((parse_last_comma_first(author_line),),), ()
     
     authors_processed = []
     authors_lookup = []
@@ -64,7 +70,7 @@ def parse_authors(author_line_):
     else:
         authors_lookup.append(author_line)
     
-    return authors_processed, len(authors_lookup) > 0
+    return authors_processed, authors_lookup
 
 def main():
     last_comma_first_matches = []
@@ -78,29 +84,40 @@ def main():
     fin = open(f"{mydir}/inventory.csv", newline="")
     csvin = reader(fin)
 
+    json_out = dict()
 
     next(csvin) # skip headers
 
     for entry in csvin:
-        author_line = entry[0].strip()
+        author_line = entry[0].strip(" ,")
 
         if len(author_line) == 0:
             continue
         
         total_authors += 1
 
-        processed_authors, failed = parse_authors(author_line)
+        processed_authors, lookup_authors = parse_authors(author_line)
+        failed = len(lookup_authors) > 0
+
 
         if failed:
             fails += 1
-            for author in processed_authors: print(author)
-            print(author_line)
-            print()
+
+            for author in lookup_authors:
+                print(author)
+
+                if author not in json_out.keys():
+                    json_out[author] = []
+
+
         # else:
         #     for author in processed_authors: print(author)
         #     print(author_line)
 
     fin.close()
+
+    with open("name_check.json", "w") as fout:
+        json.dump(json_out, fout)
 
     matches = total_authors - fails
     percent_matched = matches / total_authors * 100
