@@ -1,0 +1,448 @@
+{
+	"name": {
+		"Rosco James Ham": "Ham, Rosco James",
+		"Arthur Newton Leonard": "Leonard, Arthur Newton",
+		"Burges Johnson": "Johnson, Burges",
+		"R. E. Pattison Kline": "Kline, R. E. Pattison",
+		"Charles Beard": "Beard, Charles",
+		"Walter L. Pyle": "Pyle, Walter L.",
+		"the Late Richard M. Holman": "Holman, Richard L.",
+		"Phyllis Fraser": "Fraser, Phyllis",
+		"Mildred Anams": "Anams, Mildred",
+		"Charles Clegg": "Clegg, Charles",
+		"Henry M. Lester": "Lester, Henry M.",
+		"Fred Reinfeld": "Reinfeld, Fred",
+		"George Adamski": "Adamski, George",
+		"Beighey": "Beighey",
+		"Matthew M. Vriends": "Vriends, Matthew M.",
+		"Wanous": "Wanous",
+		"Wanous S. J.": "Wanous, S. J.",
+		"Wanousm Edward E.": "Wanousm, Edward E.",
+		"Thomas J. Emery": "Emery, Thomas J.",
+		"John Wesley Noble": "Noble, John Wesley",
+		"John Lord": "Lord, John",
+		"Walt Disney": "Disney, Walt",
+		"John D. MacDonald": "McDonald, John D.",
+		"Peters Ellis": "Peters, Ellis",
+		"Lorna R. Levi": "Levi, Lorna R.",
+		"Peter M. Topaz": "Topaz, Peter M.",
+		"Doris White": "White, Doris",
+		"Hermann Zolling": "Zolling, Hermann",
+		"L'Amour Louis": "L'Amour, Louis",
+		"Robert J. Kershner": "Kershner, Robert J.",
+		"Reader John": "Reader, John",
+		"Luce. Henry R.": "Luce, Henry R.",
+		"Michael Ledwidge": "Ledwidge, Michael",
+		"Carl Bernstein": "Bernstein, Carl",
+		"Disney Walt": "Disney, Walt",
+		"Luce Henry R": "Luce, Henry R.",
+		"Meier, H. R. (Bud)": "Meier, H. R.",
+		"Herbet E. Douglass": "Douglass, Herbert E.",
+		"Tony Fuller": "Fuller, Tony",
+		"Peters Elizabeth": "Peters, Elizabeth",
+		"Lewis Shari": "Shari, Lewis",
+		"Maddox, Robert James (Edited)": "Maddox, Robert James",
+		"Charles Leerhsen": "Leerhsen, Charles",
+		"Woititz, Ed.D, Janet G.": "Woitiz, Janet G.",
+		"Broder": "Broder,",
+		"Heyerdahl. Virginia Ann": "Heyerdahl, Virginia Ann",
+		"Albert. Susan Wittig": "Albert, Susan Wittig",
+		"Davidson Diane Mott": "Davidson, Diane Mott",
+		"Jackson Lisa": "Jackson, Lisa",
+		"John Weisman": "Weisman, John",
+		"Sandra Brown": "Brown, Sandra",
+		"Dale Craig": "Craig, Dale",
+		"Alan Rodgers": "Rodgers, Alan",
+		"Baldinger, Kathleen O'Bannon": "Baldinger, Kathleen O'Bannon",
+		"Paul Pery": "Pery, Paul",
+		"Just Ine Korman": "Korman, Justine",
+		"McDonald Gregory": "McDonald, Gregory",
+		"McKenna, Colleen O'Shaughnessy": "McKenna, Colleen O'Shaughnessy",
+		"Roberts Les": "Roberts, Les",
+		"Ossana Diana": "Ossana, Diana",
+		"Joseph Persico": "Persico, Joseph",
+		"Bob Cullen": "Cullen, Bob",
+		"Stine R.L.": "Stine, R. L.",
+		"Shimberg Elaine Fantle": "Shimberg, Elaine Fantle",
+		"Wes Smith": "Smith, Wes",
+		"Brian Tarcy": "Tarcy, Brian",
+		"Dean Chapman": "Chapman, Dean",
+		"Kaminsky Stuart": "Kaminsky, Stuart",
+		"Berger. Paul E.": "Berger, Paul E.",
+		"Stephanie Mensh": "Mensh, Stephanie",
+		"Benjilian-Burgy": "Benjilian, Burgy",
+		"Samantha Berger": "Berger, Samantha",
+		"Rosamond Smith": "Smith, Rosamond",
+		"Lynda Rutledge Stephenson": "Stephenson, Lynda Rutledge",
+		"Mary Flynn": "Flynn, Mary",
+		"Capucilli. Alyssa Satin": "Capucilli, Alyssa Satin",
+		"Carol Higgins Clark0": "Clark, Carol Higgins",
+		"Mary Jane Swanson": "Swanson, Mary Jane",
+		"James W. Robinson": "Robinson, James W.",
+		"Final Report of the National Commission": "National Commission",
+		"Mark Jenkins": "Jenkins, Mark",
+		"Kaye, Marvin (Edited by)": "Kaye, Marvin",
+		"Kellerman Jonathan": "Kellerman, Jonathan",
+		"Philip Shelby": "Shelby, Philip",
+		"Rita Cristofari": "cristofari, Rita",
+		"King Stephen": "King, Stephen",
+		"Peter De Jonge": "De Jonge, Peter",
+		"Andrew Gross": "Gross, Andrew",
+		"Shizuru Hayashiya": "Hayashiya, Shizuru",
+		"W. Audry": "Audry, W.",
+		"C. L. Joshua": "Joshua, C. L.",
+		"David Eugene Smith": "Smith, David Eugene",
+		"De Lee Joseph B.": "De Lee, Joseph B.",
+		"Alter, Dinsmore, , SC D": "Alter, Dinsmore",
+		"Johanna Spyri": "Spyri, Johanna",
+		"George Elizabeth": "George, Elizabeth",
+		"Fair, A. A. (Earl Stanley Gardner": "Fair, A. A.",
+		"Anonymous": "Anonymous,",
+		"Various Others": "Various Others,",
+		"None Others": "None Others,",
+		"Several Others": "Several Others,",
+		"Various": "Various,"
+	},
+	"line": {
+		"Grimm, Jacob and William": [
+			"Grimm, Jacob",
+			"Grimm, William"
+		],
+		"Untermeyer, Louis (Edited)": [
+			"Untermeyer, Louis"
+		],
+		"Jackson, Kathryn and Byron": [
+			"Jackson, Kathryn",
+			"Jackson, Byron"
+		],
+		"Kathryn and Byron Jackson": [
+			"Jackson, Kathryn",
+			"Jackson, Byron"
+		],
+		"Findley, Bruce and Esther": [
+			"Findley, Bruce",
+			"Findley, Esther"
+		],
+		"Heyerdahl. Thor": [
+			"Heyerdahl, Thor"
+		],
+		"LaGrone, Gregory G., McHenry, Andrea Sendon, O'Connor, Patricia": [
+			"LaGrone, Gregory G.",
+			"McHenry, Andrew Sendon",
+			"O'Connor, Patricia"
+		],
+		"Harroy, Franco Tassi, Fulco Pratesi * Christopher Humphries": [
+			"Harroy, Franco Tassi",
+			"Pratesi, Fulco",
+			"Humpheries, Christopher"
+		],
+		"Robbins, Chandler S., Bruun, Bertel & Zim, Herbert S.": [
+			"Robbins, Chandler S.",
+			"Bruun, Bertel",
+			"Zim, Herbert S."
+		],
+		"Editors of Hot Rod Maazine": [
+			"Hot Rod Magazine"
+		],
+		"Editors of Hot Rod Magazine": [
+			"Hot Rod Magazine"
+		],
+		"Mowgli Stories By Rudyard Kipling": [
+			"Kipling, Rudyard"
+		],
+		"Graves, Ralph, Managing Editor": [
+			"Graves, Ralph"
+		],
+		"Lovecraft and Others": [
+			"Lovecraft"
+		],
+		"Rollin, A. Roblert, Smith, Jerome, & Wilson, William A. Jr.": [
+			"Rollin, A. Roblert",
+			"Smith, Jerome",
+			"Wilson, William A. Jr."
+		],
+		"Chapman, Donald, Campbell, Randolph & Calvert, Robert": [
+			"Chapman, Donald",
+			"Cambpell, Randolph",
+			"Calvert, Robert"
+		],
+		"Durr, William K., LePere, Jean M. & Niehaus, Bess": [
+			"Durr, William K.",
+			"LePere, Jean M.",
+			"Niehaus, Bess"
+		],
+		"Rose, Phil and Merle": [
+			"Rose, Phil",
+			"Rose, Merle"
+		],
+		"The Heritage of America Library": [
+			"Heritage of America Library"
+		],
+		"The Spanish West": [
+			"Spanish West"
+		],
+		"Time Life": [
+			"Time Magazine"
+		],
+		"Cleaver, Vera and Bill": [
+			"Cleaver, Vera",
+			"Cleaver, Bill"
+		],
+		"J & P Coats 100 Embroidery Stitches": [
+			"J & P Coats"
+		],
+		"Bayer, William C., Ruth, Shirley O., Adrian W., Robert": [
+			"Bayer, William C.",
+			"Ruth, Shirley O.",
+			"Robert, Adrian W."
+		],
+		"Davis Jr., Donald G. (Editor)": [
+			"Davis Jr., Donald G."
+		],
+		"Heston, Leonard & Renate": [
+			"Heston, Leonard",
+			"heston, Renate"
+		],
+		"Klinge, Mrs. Ray (Annette), Jr.": [
+			"Klinge, Mrs. Annette"
+		],
+		"Greer, E. Eugene & Elaine W.": [
+			"Greer, E. Eugene",
+			"Greer, Elaine W."
+		],
+		"Meier, H. R. (Bud)": [
+			"Meier, H. R."
+		],
+		"Waldhorn, Arthur, Zeiger, Arthur": [
+			"Waldhorn, Arthur",
+			"Zeiger, Arthur"
+		],
+		"Knoblauch, R. H. (Beryl) Mrs.": [
+			"Knoblauch, Mrs. Beryl"
+		],
+		"Weaver, Brower, Smiley, and Porreca": [
+			"Weaver",
+			"Brower",
+			"Smiley",
+			"Porreca"
+		],
+		"Davidson, Sidney, Stickney, Clyde P. & Weil, Roman L.": [
+			"Davidson, Sidney",
+			"Stickney, Clyde P.",
+			"Weil, Roman L."
+		],
+		"Doster, Ward, Hockett, Poitras, Bjork, William C. Ruth, Shirleyi O., Adrian W. Robert": [
+			"Doster, Ward",
+			"Hockett, Poitras",
+			"Bjork, William C.",
+			"Ruth, Shirley O.",
+			"Robert, Adrian W."
+		],
+		"Doster, Ward, Hockett, Poitras, Bjork, William C., Ruth, Shirley, O. Adrian W. Robert": [
+			"Doster, Ward",
+			"Hockett, Poitras",
+			"Bjork, William C.",
+			"Ruth, Shirley O.",
+			"Robert, Adrian W."
+		],
+		"No Author": [
+			"Anonymous"
+		],
+		"Twilegar, Burt, Brown, Jack & Potter, Jim": [
+			"Twilegar, Burt",
+			"Brown, Jack",
+			"Potter, Jim"
+		],
+		"Coleman, Dorothy S. , Elizabeth a and Evelyn J.": [
+			"Coleman, Dorothy S.",
+			"Coleman, Elizabeth A.",
+			"Coleman, Evelyn J."
+		],
+		"Shrodes, Caroline, Finestone, Harry, & Shugrue, Michael": [
+			"Chrodes, Caroline",
+			"Finestone, Harry",
+			"Shuguru, Michael"
+		],
+		"Supplee, Charles & Douglas and Barbara Anderson": [
+			"Supplee, Charles",
+			"Supplee, Douglas",
+			"Anderson, Barbara"
+		],
+		"Hamilton, Wk. R., Wooley, A. R. & Bishop, A. C.": [
+			"Hamilton, W. R",
+			"Wooley, A. R.",
+			"Bishop, A. C."
+		],
+		"Tierra, C.A., N.D., Michael": [
+			"Tierra, C. A.",
+			"Michael, N. D."
+		],
+		"Judd, Polly and Pam": [
+			"Judd, Polly",
+			"Judd, Pam"
+		],
+		"Walker, Cynthia, Whitesides, Elvin, Morria, Rob": [
+			"Walker, Cynthia",
+			"Whitesides, Elvin",
+			"Morria, Rob"
+		],
+		"Canfield & Hansen": [
+			"Canfield",
+			"Hansen"
+		],
+		"Lamoureux, Maisie & Jane Troop & Dale Craig": [
+			"Lamoureuz, Maisie",
+			"Troop, Jane",
+			"Craig, Dale"
+		],
+		"Aron, Artthur and Elaine N.": [
+			"Aron, Arthur",
+			"Aron, Elaine N."
+		],
+		"Edwards, Paul & Sarah": [
+			"Edwards, Paul",
+			"Edwards, Sarah"
+		],
+		"Lopez, D. A., MD., Williams, R. M. MD, Ph. D. & Miehlke, K. M.D.": [
+			"Lopez, D. A., MD.",
+			"Williams, R. M. MD, Ph. D.",
+			"Miehlke, K. M.D."
+		],
+		"Quick Books": [
+			"QuickBooks"
+		],
+		"Quick Books for Windows": [
+			"QuickBooks"
+		],
+		"Canfield, Jack, Mark Victor Hansen, Kimberly Kirberger": [
+			"Canfield, Jack",
+			"Hansen, Mark Victor",
+			"Kimgerger, Kimberly"
+		],
+		"Haddad, Alexandria & Christopher": [
+			"Haddad, Alexandria",
+			"Haddad, Christopher"
+		],
+		"Martin, Don and Betty": [
+			"Martin, Don",
+			"Martin, Betty"
+		],
+		"Howard, Alice and Walden": [
+			"Howard, Alice",
+			"Howard, Walden"
+		],
+		"Carey Kinsolving and Friends": [
+			"Kinsolving, Carey"
+		],
+		"Myler, Dale, Ron and Bob": [
+			"Myler, Dale",
+			"Myler, Ron",
+			"Myler, Bob"
+		],
+		"Parsons & Oja": [
+			"Parsons",
+			"Oja"
+		],
+		"Clark, Mary & Carol Higgins": [
+			"Clark, Mary",
+			"Clark, Carol Higgins"
+		],
+		"Henson, Dusty and Bonnie": [
+			"Henson, Dusty",
+			"Henson, Bonnie"
+		],
+		"Wiaater, Stanley, Golden, Christopher & Hank Wagner": [
+			"Wiaater, Stanley",
+			"Golden, Christopher",
+			"Wagner, Hank"
+		],
+		"Doherty, Bridget, Van Tine, Julia & the Editors of Prevention": [
+			"Doherty, Bridget",
+			"Van Tine, Julia"
+		],
+		"Miller, John, Michael Stone & Chris Mitchell": [
+			"Miller, John",
+			"Stone, Michael",
+			"Mitchell, Chris"
+		],
+		"Mitchell, & Hinman": [
+			"Hinman, Mitchell"
+		],
+		"Sears, Roebuck and Co.": [
+			"Sears, Roebuck and Co."
+		]
+
+	},
+	"literal": [
+		"Dr. Seuss",
+		"Santa Claus",
+		"Balzac",
+		"McGuffey",
+		"Uncle Milton",
+		"Los Angeles",
+		"Non Denominational",
+		"The Literary Digest",
+		"The Platt & Monk Co., Inc.",
+		"Kellogg",
+		"Avi Nothing But the Truth",
+		"Treasure Chest",
+		"Bible Stories",
+		"Ariane",
+		"Sunset Books",
+		"Nicole",
+		"Matias",
+		"Merriam-Webster",
+		"National Geographic",
+		"Lovecraft",
+		"Bureau of Business Practice",
+		"Sears, Roebuck and Co.",
+		"Artcraft",
+		"Levin",
+		"Life Magazine",
+		"Crafts Advisory Committee",
+		"Heritage of America Library",
+		"Junior League of Waterloo",
+		"J & P Coats",
+		"Trevanian",
+		"Weaver",
+		"Brower",
+		"Smiley",
+		"Porreca",
+		"Singh",
+		"Rodale",
+		"St. Mary's Medical Center",
+		"World Book",
+		"American College of Sports Medicine",
+		"Broderbund",
+		"Heloise",
+		"Wordperfect",
+		"Canfield",
+		"Hansen",
+		"Mary",
+		"Princeton Review",
+		"Professional Staff",
+		"The RIA Complete Analysis",
+		"Grolier",
+		"Kidz",
+		"Miss Vine",
+		"Bennett",
+		"Comp USA Computer Training",
+		"QuickBooks",
+		"Wainscott",
+		"Cole's Home Library Cookbooks",
+		"Prevention Health Books",
+		"U Can Do",
+		"Hannity",
+		"Press Association",
+		"Manual of Universal Applicaion",
+		"The Platt",
+		"Gogol",
+		"Hot Rod Magazine",
+		"Time Magazine",
+		"Parsons",
+		"Oja",
+		"DK Eyewitness Travel Guides",
+		"Sunset Magazine",
+		"Spanish West"
+	]
+}
