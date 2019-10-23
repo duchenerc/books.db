@@ -99,12 +99,12 @@ def main():
     with open(f"{MYDIR}/name_check.json") as jsonin:
         author_resolve = json.load(jsonin)
 
-    genres_store = []
-    authors_store = []
-    jackets_store = []
-    conditions_store = []
-    bindings_store = []
-    publishers_store = []
+    genres_store = [None]
+    authors_store = [None]
+    jackets_store = [None]
+    conditions_store = [None]
+    bindings_store = [None]
+    publishers_store = [None]
 
     genre_idgen = id_generator()
     condition_idgen = id_generator()
@@ -129,8 +129,8 @@ def main():
         condition = parse_condition(entry[CONDITION_COL])
         jacket = parse_jacket(entry[JACKET_COL])
         binding = parse_binding(entry[BINDING_COL])
-        publisher = entry[PUBLISHER_COL]
-        publish_year = entry[PUBLISHYEAR_COL]
+        publisher = entry[PUBLISHER_COL] if len(entry[PUBLISHER_COL]) > 0 else None
+        publish_year = int(entry[PUBLISHYEAR_COL])
 
         edition = entry[EDITION_COL]
         page_count = entry[PAGES_COL]
@@ -143,7 +143,8 @@ def main():
         except:
             isbn = None
 
-        
+        if len(genre.strip()) == 0:
+            genre = None 
 
         if genre not in genres_store:
             genre_new_id = next(genre_idgen)
@@ -176,24 +177,39 @@ def main():
             conn.commit()
         
         # genre_id
-        c.execute("select id from genres where genre_name = ?;", (genre,))
-        genre_id = c.fetchone()[0]
+        if genre is None:
+            genre_id = None
+        else:
+            c.execute("select id from genres where genre_name = ?;", (genre,))
+            genre_id = c.fetchone()[0]
         
         # condition_id
-        c.execute("select id from conditions where condition = ?;", (condition,))
-        condition_id = c.fetchone()[0]
+        if condition is None:
+            condition_id = None
+        else:
+            c.execute("select id from conditions where condition = ?;", (condition,))
+            condition_id = c.fetchone()[0]
 
         # jacket_id
-        c.execute("select id from jackets where jacket = ?;", (jacket,))
-        jacket_id = c.fetchone()[0]
+        if jacket is None:
+            jacket_id = None
+        else:
+            c.execute("select id from jackets where jacket = ?;", (jacket,))
+            jacket_id = c.fetchone()[0]
         
         # binding_id
-        c.execute("select id from bindings where book_binding = ?;", (binding,))
-        binding_id = c.fetchone()[0]
+        if binding is None:
+            binding_id = None
+        else:
+            c.execute("select id from bindings where book_binding = ?;", (binding,))
+            binding_id = c.fetchone()[0]
         
         # publisher_id
-        c.execute("select id from publishers where publisher = ?;", (publisher,))
-        publisher_id = c.fetchone()[0]
+        if publisher is None:
+            publisher_id = None
+        else:
+            c.execute("select id from publishers where publisher = ?;", (publisher,))
+            publisher_id = c.fetchone()[0]
         
         conn.commit()
 
@@ -230,7 +246,7 @@ def main():
         for author_name in parsed:
 
             if len(author_name) == 2:
-                first, last = author_name
+                last, first = author_name
             else:
                 last = author_name[0]
                 first = None

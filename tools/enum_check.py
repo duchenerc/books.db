@@ -11,7 +11,7 @@ def parse_condition(condition_line):
     condition = condition_line.strip().lower()
 
     if len(condition) == 0:
-        return "very good"
+        return None
 
     elif condition == "poor, very poor":
         return "very poor"
@@ -29,7 +29,7 @@ def parse_jacket(jacket_line):
     jacket = jacket_line.strip().lower()
 
     if len(jacket) == 0:
-        return "no jacket"
+        return None
     
     elif jacket == "no":
         return "no jacket"

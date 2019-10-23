@@ -55,14 +55,14 @@ create table if not exists books (
     -- TODO: implement authors column
 
     publisher_id integer,
-    genre_id integer not null,
+    genre_id integer,
 
-    jacket_id integer not null,
-    condition_id integer not null,
-    binding_id integer not null,
+    jacket_id integer,
+    condition_id integer,
+    binding_id integer,
 
     isbn text,
-    publish_year text not null,
+    publish_year integer,
     book_edition text,
     page_count integer,
     notes text,

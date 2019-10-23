@@ -4,3 +4,4 @@
 *.db-wal
 *.out
 __pycache__
+reports/*.csv
