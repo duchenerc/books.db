@@ -34,7 +34,7 @@ T = r"|".join([
 TITLES = re.compile(T, re.IGNORECASE)
 
 def parse_last_comma_first(author):
-    return tuple([x.strip(" ,") for x in author.split(",") if len(x.strip(" ,")) > 0])
+    return [x.strip(" ,") for x in author.split(",") if len(x.strip(" ,")) > 0]
 
 def is_last_comma_first(author):
     return re.fullmatch(LAST_COMMA_FIRST, author) and not re.search(CONTAINS_AND, author)
@@ -47,18 +47,19 @@ def split_author_line(author_line):
 
 def parse_authors(author_line_):
 
-    author_line = strip_titles(author_line_)
+    author_line = strip_titles(author_line_).strip(" ,")
+    # print(author_line)
 
     # try simple "last, first" format
     if is_last_comma_first(author_line):
-        return ((parse_last_comma_first(author_line),),), ()
+        return (parse_last_comma_first(author_line),), ()
     
     authors_processed = []
     authors_lookup = []
 
     # try separated by "&", "and", or "with"
     if re.search(DELIMITER, author_line):
-        authors_raw = split_author_line(author_line)
+        authors_raw = [strip_titles(x) for x in split_author_line(author_line)]
 
         for author_raw in authors_raw:
             if is_last_comma_first(author_raw):
@@ -68,7 +69,7 @@ def parse_authors(author_line_):
                 authors_lookup.append(author_raw)
     
     else:
-        authors_lookup.append(author_line)
+        authors_lookup.append(strip_titles(author_line))
     
     return authors_processed, authors_lookup
 
