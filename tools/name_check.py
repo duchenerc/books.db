@@ -11,17 +11,17 @@ import re
 from os.path import abspath, dirname
 
 LAST_COMMA_FIRST = re.compile(r"[a-z-\.\s']+,[\s,]*[a-z-\.\s]+", re.IGNORECASE)
-ONE_NAME = re.compile(r"[a-zA-Z]", re.IGNORECASE)
 CONTAINS_AND = re.compile(r"\s(and|as|with|\+)\s", re.IGNORECASE)
 DELIMITER = re.compile(r"\sand\s|\swith\s|\&|\sw\/|\+", re.IGNORECASE)
 
 WRITING_AS = re.compile(r"^.*writing as\s*", re.IGNORECASE)
 
+# a list of title patterns
 T = [
     r"\bJr\.?", # Jr.
     r"\bSr\.?", # Sr.
     r"\bM\.?D\.?", # M.D.
-    r"\bDr\.?", # Dr.
+    r"\bDr\.?(?=[, ]|$)", # Dr.
     r"\bEvangelist", # Evangelist
     r"\bMrs\.?", # Mrs.
     r"\bRev\.?", # Rev.
@@ -42,10 +42,14 @@ T = [
     r"\bEd\.?\s*D\.?" # Ed.D.
 ]
 
+# match any title
 TITLES_ANY = re.compile(r"|".join(T), re.IGNORECASE)
 
+# match one title
 TITLES_ONE = [re.compile(x, re.IGNORECASE) for x in T]
 
+# normalized titles
+# indices correspond to values of TITLES_ONE
 TITLES_NORMALIZED = [
     "Jr.",
     "Sr.",
@@ -73,6 +77,7 @@ TITLES_NORMALIZED = [
 
 MYDIR = dirname(abspath(__file__))
 
+# resolvers
 RESOLVE_NAME = dict()
 RESOLVE_LINE = dict()
 RESOLVE_LITERAL = dict()
@@ -93,21 +98,13 @@ if len(RESOLVE_LINE.keys()) == 0:
         RESOLVE_LITERAL = resolve_json["literal"]
 
 
-def parse_last_comma_first(author):
-    return [x.strip(" ,") for x in author.split(",") if len(x.strip(" ,")) > 0]
-
-def is_last_comma_first(author):
-    return re.fullmatch(LAST_COMMA_FIRST, author) and not re.search(CONTAINS_AND, author)
-
-def strip_titles(author):
-    return re.sub(TITLES_ANY, "", author).strip(" ,")
-
 def parse_titles(author):
     titles = re.findall(TITLES_ANY, author)
     new_author = re.sub(TITLES_ANY, "", author)
 
     return new_author.strip(" ,"), titles
 
+# normalize a title's spacing
 def normalize_title(title):
     if title in TITLES_NORMALIZED:
         return title
@@ -118,6 +115,8 @@ def normalize_title(title):
     
     raise ValueError(f"invalid title '{title}'")
 
+# parse a single author string into a triple
+# last, first, titles
 def parse_single_author(author_raw):
     author_raw = author_raw.strip(" ,")
     author_titleless, titles = parse_titles(author_raw)
@@ -127,9 +126,6 @@ def parse_single_author(author_raw):
     if re.fullmatch(LAST_COMMA_FIRST, author_titleless):
         author_names = [x.strip(" ,") for x in author_titleless.split(",") if len(x.strip(" ,")) > 0]
     
-    # elif re.fullmatch(ONE_NAME, author_titleless):
-    #     author_names = (author_titleless, "")
-
     elif author_titleless in RESOLVE_NAME.keys():
         name = RESOLVE_NAME[author_titleless]
         if "," in name:
@@ -143,13 +139,18 @@ def parse_single_author(author_raw):
     
     return (*author_names, titles)
 
+# split a line of authors into single-author strings
 def split_author_line(author_line):
     return [x.strip(" ,") for x in re.split(DELIMITER, author_line) if len(x.strip(" ,")) > 0]
 
+# preprocess authors and remove some garbage
 def author_preprocess(author_line):
     new_author_line = re.sub(WRITING_AS, "", author_line)
     return new_author_line.strip(", ")
 
+# second iteration of parse_authors
+# takes an author line, returns a list of triples
+# last, first, titles
 def parse_authors_2(author_line):
     author_line = author_preprocess(author_line)
 
@@ -180,92 +181,7 @@ def parse_authors_2(author_line):
 
     return authors_final
 
-def parse_authors(_author_line):
-
-    author_line = author_preprocess(_author_line)
-    # print(author_line)
-
-    # try simple "last, first" format
-    if is_last_comma_first(author_line):
-        return (parse_last_comma_first(author_line),), ()
-    
-    authors_processed = []
-    authors_lookup = []
-
-    # try separated by "&", "and", or "with"
-    if re.search(DELIMITER, author_line):
-        authors_raw = [strip_titles(x) for x in split_author_line(author_line)]
-
-        for author_raw in authors_raw:
-            if is_last_comma_first(author_raw):
-                authors_processed.append(parse_last_comma_first(author_raw))
-
-            else:
-                authors_lookup.append(author_raw)
-    
-    else:
-        authors_lookup.append(strip_titles(author_line))
-    
-    return authors_processed, authors_lookup
-
 def main():
-    last_comma_first_matches = []
-    unmatched = []
-
-    fails = 0
-    total_authors = 0
-
-    mydir = dirname(dirname(abspath(__file__)))
-
-    fin = open(f"{mydir}/inventory.csv", newline="")
-    csvin = reader(fin)
-
-    json_out = dict()
-
-    next(csvin) # skip headers
-
-    for entry in csvin:
-        author_line = entry[0].strip(" ,")
-
-        if len(author_line) == 0:
-            continue
-        
-        total_authors += 1
-
-        processed_authors, lookup_authors = parse_authors(author_line)
-        failed = len(lookup_authors) > 0
-
-
-        if failed:
-            fails += 1
-
-            for author in lookup_authors:
-                print(author)
-
-                if author not in json_out.keys():
-                    json_out[author] = []
-
-
-        # else:
-        #     for author in processed_authors: print(author)
-        #     print(author_line)
-
-    fin.close()
-
-    with open("name_check.json", "w") as fout:
-        json.dump(json_out, fout)
-
-    matches = total_authors - fails
-    percent_matched = matches / total_authors * 100
-
-    print(f"""
-    Matched authors: {matches}
-    Total authors: {total_authors}
-
-    Matched: {percent_matched:.2f}%
-    """)
-
-def main2():
 
     mydir = dirname(dirname(abspath(__file__)))
     inventory_filename = f"{mydir}/inventory.csv"
@@ -292,5 +208,4 @@ def main2():
     print(f"Total manual: {len(cant_figure_out)}")
 
 if __name__ == "__main__":
-    # main()
-    main2()
+    main()

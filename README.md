@@ -2,7 +2,7 @@
 
 I chose to use SQLite for this project for these reasons, among others:
 
-* SQLite's use case is similar to that of tools like Excel. There's a certain appeal to having an actual file to sit in the filesystem -- it is very conveient to copy and share the file.
+* SQLite's intended use case is similar to that of tools like Excel. There's a certain appeal to having an actual file to sit in the filesystem -- it is very conveient to copy and share the file.
 * SQLite has good native integration with the Python language. Python comes with SQLite support baked in through the `sqlite3` module.
 
 The biggest problems that I ran into was how to parse author names. Most author names were in a last-comma-first format, with any titles appearing at the end, but there were a lot of discrepencies. I spent far too much time writing a custom set of regexes that could parse titles straight out of an author string regardless of their position in the string and without leaving anything else behind. Some author names were impossible to parse, so I created some lookup tables and manually formatted about 300 names. I spent over half my time on this assignment on parsing authors alone.

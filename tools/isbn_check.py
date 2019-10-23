@@ -23,6 +23,7 @@ NULL_VALS = [
     "noisbn==="
 ]
 
+# manually resolve some isbns
 RESOLVER = {
     "031271741+5":     "0312717415",
     "0517460884x":     "517460884x",

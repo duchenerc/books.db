@@ -59,12 +59,14 @@ values
 );
 """
 
+# Generates a new id every time it is called.
 def id_generator():
     counter = 1
     while True:
         yield counter
         counter += 1
 
+# Returns the sql from a file as a string.
 def get_sql_script(filename):
     fin = open(filename)
     sql_script = fin.read()
@@ -72,6 +74,7 @@ def get_sql_script(filename):
 
     return sql_script
 
+# Connects to the passed db and returns the connection.
 def db_connect(filename):
     conn = sqlite3.connect(f"{MYDIR}/{filename}")
 
@@ -82,6 +85,7 @@ def db_connect(filename):
 
     return conn
 
+# Executes the db setup script
 def db_setup(conn):
     sql_setup = get_sql_script(f"{SCRIPTS_DIR}/setup.sql")
     c = conn.cursor()
@@ -89,24 +93,22 @@ def db_setup(conn):
     c.close()
 
 def main():
+    # Setup db
     conn = db_connect(DATABASE_FILENAME)
     db_setup(conn)
 
-
+    # Setup csv file open
     fin = open(INVENTORY)
     csvin = reader(fin)
 
-    with open(f"{MYDIR}/name_check.json") as jsonin:
-        author_resolve = json.load(jsonin)
-
+    # Cache stored values
     genres_store = [None]
-    authors_store = [None]
     jackets_store = [None]
     conditions_store = [None]
     bindings_store = [None]
     publishers_store = [None]
-    titles_store = [None]
 
+    # make id generators
     genre_idgen = id_generator()
     condition_idgen = id_generator()
     jacket_idgen = id_generator()
@@ -116,6 +118,7 @@ def main():
     book_idgen = id_generator()
     author_idgen = id_generator()
 
+    # insert all titles into db ahead of time
     for title in TITLES_NORMALIZED:
         conn.execute("insert into titles values (NULL, ?);", (title,))
 
@@ -123,11 +126,13 @@ def main():
 
     for entry in csvin:
 
+        # if row empty, fast continue
         if len(entry[TITLE_COL]) == 0:
             continue
 
         c = conn.cursor()
 
+        # get column data
         genre = entry[GENRE_COL]
         condition = parse_condition(entry[CONDITION_COL])
         jacket = parse_jacket(entry[JACKET_COL])
@@ -146,6 +151,7 @@ def main():
         except:
             isbn = None
 
+        # store genres, conditions, jackets, bindings, publishers
         if len(genre.strip()) == 0:
             genre = None 
 
@@ -216,6 +222,7 @@ def main():
         
         conn.commit()
 
+        # store book
         this_book_id = next(book_idgen)
 
         c.execute(BOOK_INSERT, (
@@ -235,11 +242,13 @@ def main():
         
         conn.commit()
 
+        # store authors
         authors = parse_authors_2(entry[AUTHOR_COL])
             
         authors_ids = []
         for last, first, titles in authors:
-
+            
+            # get author id
             if len(first) == 0:
                 c.execute("select id from authors where surname = ? and given_name = NULL;", (last,))
             else:
@@ -247,12 +256,16 @@ def main():
 
             results = c.fetchall()
 
+            # if the results from that query are nonexistent,
+            # then this author is new.
+            # insert author
             if len(results) == 0:
                 author_id = next(author_idgen)
                 c.execute("insert into authors values (?, ?, ?, NULL);", (author_id, last, first))
 
                 title_ids = []
 
+                # store author's titles
                 for title in titles:
                     c.execute("select id from titles where title_name = ?;", (title,))
                     title_ids.append(c.fetchone()[0])
@@ -267,6 +280,7 @@ def main():
         
         conn.commit()
 
+        # store books-authors relationship
         for author_id in authors_ids:
             c.execute("insert into books_authors values (NULL, ?, ?);", (this_book_id, author_id))
 
