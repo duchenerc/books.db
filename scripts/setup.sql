@@ -103,3 +103,26 @@ create table if not exists books_authors (
         on delete no action
         on update no action
 );
+
+create table if not exists titles (
+    id integer
+    constraint titles_key primary key autoincrement,
+
+    title_name text
+);
+
+create table if not exists authors_titles (
+    id integer
+    constraint authors_titles_key primary key autoincrement,
+
+    author_id integer not null,
+    title_id integer not null,
+
+    foreign key (author_id) references authors (id)
+        on delete no action
+        on update no action,
+    
+    foreign key (title_id) references titles (id)
+        on delete no action
+        on update no action
+);

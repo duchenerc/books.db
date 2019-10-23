@@ -131,7 +131,11 @@ def parse_single_author(author_raw):
     #     author_names = (author_titleless, "")
 
     elif author_titleless in RESOLVE_NAME.keys():
-        author_names = [x.strip(" ,") for x in RESOLVE_NAME[author_titleless]]
+        name = RESOLVE_NAME[author_titleless]
+        if "," in name:
+            author_names = [x.strip(" ,") for x in name.split(",")]
+        else:
+            author_names = (name, "")
 
     else:
         print(author_raw)
@@ -164,7 +168,7 @@ def parse_authors_2(author_line):
             author_final = parse_single_author(author_raw)
 
             if author_final[0] in GARBAGE:
-                print("garbage")
+                # print("garbage")
                 continue
 
         if len(author_final[1]) == 0:
@@ -280,6 +284,8 @@ def main2():
         authors += parse_authors_2(entry[0])
     
     cant_figure_out = [x for x in authors if len(x[1]) == 0]
+
+    for author in authors: print(author)
 
     fin.close()
 

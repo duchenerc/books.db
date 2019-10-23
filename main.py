@@ -5,7 +5,7 @@ from os.path import dirname, abspath
 
 from tools.enum_check import parse_binding, parse_condition, parse_jacket
 from tools.isbn_check import parse_isbn
-from tools.name_check import parse_authors, parse_last_comma_first
+from tools.name_check import parse_authors_2, TITLES_NORMALIZED
 
 DATABASE_FILENAME = "books.db"
 MYDIR = dirname(abspath(__file__))
@@ -105,6 +105,7 @@ def main():
     conditions_store = [None]
     bindings_store = [None]
     publishers_store = [None]
+    titles_store = [None]
 
     genre_idgen = id_generator()
     condition_idgen = id_generator()
@@ -115,6 +116,8 @@ def main():
     book_idgen = id_generator()
     author_idgen = id_generator()
 
+    for title in TITLES_NORMALIZED:
+        conn.execute("insert into titles values (NULL, ?);", (title,))
 
     next(csvin) # skip headers
 
@@ -232,26 +235,12 @@ def main():
         
         conn.commit()
 
-        parsed, lookup = parse_authors(entry[AUTHOR_COL])
-
-        for line in lookup:
-
-            if len(line) == 0:
-                continue
-
-            looked_up = author_resolve[line]
-            parsed += [parse_last_comma_first(x) for x in looked_up]
+        authors = parse_authors_2(entry[AUTHOR_COL])
             
         authors_ids = []
-        for author_name in parsed:
+        for last, first, titles in authors:
 
-            if len(author_name) == 2:
-                last, first = author_name
-            else:
-                last = author_name[0]
-                first = None
-
-            if first is None:
+            if len(first) == 0:
                 c.execute("select id from authors where surname = ? and given_name = NULL;", (last,))
             else:
                 c.execute("select id from authors where surname = ? and given_name = ?;", (last, first))
@@ -261,6 +250,15 @@ def main():
             if len(results) == 0:
                 author_id = next(author_idgen)
                 c.execute("insert into authors values (?, ?, ?, NULL);", (author_id, last, first))
+
+                title_ids = []
+
+                for title in titles:
+                    c.execute("select id from titles where title_name = ?;", (title,))
+                    title_ids.append(c.fetchone()[0])
+                
+                for title_id in title_ids:
+                    c.execute("insert into authors_titles values (NULL, ?, ?)", (author_id, title_id))
             
             else:
                 author_id = results[0][0]
