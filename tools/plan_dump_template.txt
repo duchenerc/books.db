@@ -1,0 +1,16 @@
+
+----------
+QUERY NAME {query_name}
+
+ORIGINAL
+{query_old}
+
+{query_old_plan}
+
+VS
+NEW
+{query_new}
+
+{query_new_plan}
+
+TIME DIFFERENCE: {query_old_time}ns - {query_new_time}ns = {diff_time}ns

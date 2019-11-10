@@ -1,23 +1,26 @@
 create index if not exists author_names
-on authors (surname, given_name);
+on authors (surname, given_name, id);
 
 create index if not exists book_titles
-on books (title);
+on books (title, id);
+
+create index if not exists book_publishers
+on books (publisher_id, title);
 
 create index if not exists publisher_names
-on publishers (publisher);
-
-create unique index if not exists author_ids
-on authors (id);
-
-create unique index if not exists book_ids
-on books (id);
-
-create unique index if not exists publisher_ids
-on publishers (id);
-
-create index if not exists books_publish_years
-on books (publish_year);
+on publishers (publisher, id);
 
 create index if not exists books_titles_publish_years
-on books (title, publish_year);
+on books (publish_year, title);
+
+create index if not exists books_missing_data
+on books (
+    genre_id,
+    publisher_id,
+    binding_id,
+    condition_id,
+    jacket_id,
+    isbn,
+    id,
+    title
+);
