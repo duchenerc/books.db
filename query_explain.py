@@ -138,13 +138,14 @@ def main():
 
         c.close()
     
+    # get template explanation
     with open(f"{MYDIR}/tools/plan_dump_template.txt") as tempin:
         dump_template = tempin.read()
-        
+    
+    # write explanations
     for query_name in QUERIES_REPORTS.keys():
         with open(f"{MYDIR}/explanations/{query_name}.txt", "w") as fout:
-
-
+            
             query_new = re.sub(WHITESPACE, " ", QUERIES_REPORTS[query_name].strip())
             query_old = re.sub(WHITESPACE, " ", QUERIES_REPORTS_OLD[query_name].strip())
 
