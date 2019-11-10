@@ -52,8 +52,6 @@ create table if not exists books (
 
     title not null,
 
-    -- TODO: implement authors column
-
     publisher_id integer,
     genre_id integer,
 

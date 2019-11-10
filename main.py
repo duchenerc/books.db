@@ -88,8 +88,12 @@ def db_connect(filename):
 # Executes the db setup script
 def db_setup(conn):
     sql_setup = get_sql_script(f"{SCRIPTS_DIR}/setup.sql")
+    sql_index = get_sql_script(f"{MYDIR}/scripts/index.sql")
+
     c = conn.cursor()
+
     c.executescript(sql_setup)
+    c.executescript(sql_index)
     c.close()
 
 def main():
