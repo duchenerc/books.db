@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # get which task we want to do
 param=$1
@@ -20,7 +21,7 @@ if [[ "$task" == "build" ]]; then
     python3 "$pa02_dir/report.py"
 
 elif [[ "$task" == "explain" ]]; then
-    echo "build: generating explainations"
+    echo "build: generating explanations"
     python3 "$pa02_dir/query_explain.py"
 
 else

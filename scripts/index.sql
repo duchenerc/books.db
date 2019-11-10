@@ -10,17 +10,24 @@ on books (publisher_id, title);
 create index if not exists publisher_names
 on publishers (publisher, id);
 
-create index if not exists books_titles_publish_years
-on books (publish_year, title);
 
-create index if not exists books_missing_data
-on books (
-    genre_id,
-    publisher_id,
-    binding_id,
-    condition_id,
-    jacket_id,
-    isbn,
+create view if not exists books_new (
+    title,
+    publish_year
+) as
+select title, publish_year
+from books
+where publish_year >= 2000;
+
+create view if not exists books_missing_data (
     id,
     title
-);
+) as
+select id, title
+from books
+where genre_id is null
+or publisher_id is null
+or binding_id is null
+or condition_id is null
+or jacket_id is null
+or isbn is null;

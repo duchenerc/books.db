@@ -35,20 +35,13 @@ QUERIES_REPORTS = {
     """,
 
     "new_books": f"""
-        select books.title, books.publish_year
-        from books
-        where books.publish_year >= 2000;
+        select title, publish_year
+        from books_new;
     """,
 
     "books_missing_data": """
-        select books.id, books.title
-        from books
-        where books.genre_id is null
-        or books.publisher_id is null
-        or books.binding_id is null
-        or books.condition_id is null
-        or books.jacket_id is null
-        or books.isbn is null;
+        select id, title
+        from books_missing_data;
     """
 
 }
