@@ -16,6 +16,19 @@ BOOK_TITLES = "select id, title from books"
 AUTHOR_NAMES = "select id, surname, given_name from authors"
 BOOK_TITLES_PUBLISHERS = "select title, publisher_id from books"
 
+BOOKS_AUTHORS_SELF_JOIN_OLD = """
+    select lhs.author_id author_id, rhs.author_id coauthor_id
+    from books_authors lhs, books_authors rhs
+    where lhs.book_id = rhs.book_id and lhs.id != rhs.id
+"""
+
+BOOKS_AUTHORS_SELF_JOIN_NEW = """
+    select lhs.author_id author_id, count(rhs.author_id) num_coauthors
+    from books_authors lhs, books_authors rhs
+    where lhs.book_id = rhs.book_id and lhs.id != rhs.id
+    group by lhs.author_id
+"""
+
 # main report queries
 QUERIES_REPORTS = {
 
@@ -42,8 +55,15 @@ QUERIES_REPORTS = {
     "books_missing_data": """
         select id, title
         from books_missing_data;
-    """
+    """,
 
+
+    # new query for pa03
+    "body_count": f"""
+        select authors.surname, authors.given_name, j.num_coauthors
+        from authors, ({BOOKS_AUTHORS_SELF_JOIN_NEW}) j
+        where authors.id = j.author_id;
+    """
 }
 
 # old (pa02) unoptimized queries
@@ -78,6 +98,14 @@ QUERIES_REPORTS_OLD = {
         or books.condition_id is null
         or books.jacket_id is null
         or books.isbn is null;
+    """,
+
+    # new query for pa03
+    "body_count": f"""
+        select authors.surname, authors.given_name, count(j.coauthor_id)
+        from authors, ({BOOKS_AUTHORS_SELF_JOIN_OLD}) j
+        where authors.id = j.author_id
+        group by authors.surname, authors.given_name;
     """
 
 }
@@ -102,7 +130,7 @@ def main():
         # store query plans
         # interact with shell
         result = run(["sqlite3", DATABASE_FILENAME, sql], stdout=PIPE)
-        plans[(query_name, "old")] = result.stdout.decode().strip()
+        plans[query_name, "old"] = result.stdout.decode().strip()
 
         # store benchmark
         c = conn.cursor()
@@ -110,7 +138,7 @@ def main():
         start = timer()
         c.executescript(sql)
         stop = timer()
-        benchmarks[(query_name, "old")] = stop - start
+        benchmarks[query_name, "old"] = stop - start
 
         c.close()
 
@@ -126,7 +154,7 @@ def main():
         
         # store query plans
         result = run(["sqlite3", DATABASE_FILENAME, sql], stdout=PIPE)
-        plans[(query_name, "new")] = result.stdout.decode().strip()
+        plans[query_name, "new"] = result.stdout.decode().strip()
 
         # store benchmark
         c = conn.cursor()
@@ -134,7 +162,7 @@ def main():
         start = timer()
         c.executescript(sql)
         stop = timer()
-        benchmarks[(query_name, "new")] = stop - start
+        benchmarks[query_name, "new"] = stop - start
 
         c.close()
     
