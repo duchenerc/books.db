@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}authors{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">author</th>
+                <th scope="col">books</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for author_id, author in authors.items() %}
+                <tr>
+                    <td><a href="{{ url_for('author', author_id=author_id) }}">
+                        {{ author["surname"] }}, {{ author["given_name"] }}
+                    </a></td>
+
+                    <td>
+                        <ul class="list-unstyled">
+                            {% for book in books[author_id] %}
+                            <li>
+                                <a href="{{ url_for('book', book_id=book['id']) }}">
+                                    {{ book["title"] }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

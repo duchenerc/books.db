@@ -98,6 +98,19 @@ def id_generator():
         yield counter
         counter += 1
 
+def db_exec(conn, sql, *params):
+    c = conn.cursor()
+
+    c.execute(sql, params)
+
+    while True:
+        row = c.fetchone()
+
+        if row is None:
+            break
+
+        yield row
+
 def db_make(conn):
 
     # Setup csv file open
