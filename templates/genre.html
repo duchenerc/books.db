@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}genre: {{ genre[1] }}{% endblock %}
+
+{% block main %}
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">{{ genre[1] }}</h1>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">title</th>
+                <th scope="col">authors</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book_id, book_title in books.items() %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('book', book_id=book_id) }}">{{ book_title }}</a>
+                </td>
+                <td>
+                    <ul class="list-unstyled">
+                    {% for author in authors[book_id] %}
+                        <li>
+                            <a href="{{ url_for('author', author_id=author['id']) }}">
+                                {{ author["surname"] }}, {{ author["given_name"] }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

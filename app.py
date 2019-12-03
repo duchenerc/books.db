@@ -106,3 +106,55 @@ def author(author_id):
     books = [{"id": x[0], "title": x[1]} for x in books_query]
 
     return render_template("author.html", author=author_tup, books=books)
+
+@app.route("/genre")
+def index_genre():
+
+    genres_query = db_exec(db, """
+        select g.id, g.genre_name
+        from genres g
+        order by g.genre_name;
+    """)
+
+    genres = {x[0]: x[1] for x in genres_query}
+
+    return render_template("index_genre.html", genres=genres)
+
+@app.route("/genre/<genre_id>")
+def genre(genre_id):
+
+    genre_query = db_exec(db, """
+        select g.id, g.genre_name
+        from genres g
+        where g.id = ?;
+    """, genre_id)
+
+    genre_tup = next(genre_query)
+
+    books_query = db_exec(db, """
+        select b.id, b.title, a.id, a.surname, a.given_name 
+        from books b, authors a, books_authors ba
+        where b.genre_id = ?
+        and b.id = ba.book_id
+        and a.id = ba.author_id;
+    """, genre_id)
+
+    books = dict()
+    authors = dict()
+
+    for b_id, b_title, a_id, a_surname, a_given_name in books_query:
+
+        author = {
+            "id": a_id,
+            "surname": a_surname,
+            "given_name": a_given_name
+        }
+
+        if b_id not in books.keys():
+            books[b_id] = b_title
+            authors[b_id] = [author]
+                
+        else:
+            authors[b_id].append(author)
+    
+    return render_template("genre.html", genre=genre_tup, books=books, authors=authors)
