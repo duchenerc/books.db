@@ -31,3 +31,12 @@ or binding_id is null
 or condition_id is null
 or jacket_id is null
 or isbn is null;
+
+create view if not exists author_collaborations (
+    author_id,
+    coauthor_id
+) as
+select lhs.author_id author_id, rhs.author_id coauthor_id
+from books_authors lhs, books_authors rhs
+where lhs.book_id = rhs.book_id
+    and lhs.id != rhs.id;

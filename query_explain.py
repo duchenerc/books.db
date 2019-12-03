@@ -23,10 +23,9 @@ BOOKS_AUTHORS_SELF_JOIN_OLD = """
 """
 
 BOOKS_AUTHORS_SELF_JOIN_NEW = """
-    select lhs.author_id author_id, count(rhs.author_id) num_coauthors
-    from books_authors lhs, books_authors rhs
-    where lhs.book_id = rhs.book_id and lhs.id != rhs.id
-    group by lhs.author_id
+    select author_id, count(coauthor_id) num_coauthors
+    from author_collaborations
+    group by author_id
 """
 
 # main report queries
